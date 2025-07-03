@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <title>WAZASTO ⭐ Rating System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <style>
+    .star-animate {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+    .star-animate:hover {
+      transform: scale(1.3);
+      color: #facc15;
+    }
+  </style>
+</head>
+
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+
+<!-- ✅ Navbar -->
+<header class="fixed w-full bg-white dark:bg-gray-800 shadow-lg z-50" data-aos="fade-down" data-aos-duration="800">
+  <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">WAZASTO FREELANCER</h1>
+    <button onclick="toggleMenu()" class="md:hidden text-gray-800 dark:text-white text-3xl">☰</button>
+    <nav id="navLinks" class="hidden md:flex md:items-center md:space-x-6 absolute md:static top-full left-4 right-4 mt-2 md:mt-0 bg-white dark:bg-gray-800 rounded-xl md:rounded-none shadow-lg md:shadow-none p-5 md:p-0 flex-col md:flex-row space-y-4 md:space-y-0 z-40">
+      <a href="../index.html" class="block text-base font-medium text-gray-700 dark:text-gray-200 hover:text-blue-500">Home</a>
+      <a href="services.html" class="block">Services</a>
+      <a href="pricing.html" class="block">Pricing</a>
+      <a href="contact.html" class="block">Contact</a>
+      <a href="web-development.html" class="block">Web-Development</a>
+      <a href="seo-optimization.html" class="block">SEO-Optimization</a>
+      <a href="website-management.html" class="block">Web-Management</a>
+      <a href="custom-packages.html" class="block">Custom-Packages</a>
+      <a href="speed-optimization.html" class="block">Speed-Optimization</a>
+      <a href="rating.html" class="hover:text-yellow-500">⭐ Rate Us</a>
+      <button onclick="toggleDark()" class="bg-gray-200 dark:bg-gray-700 text-sm px-3 py-1 rounded shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 transition">🌙</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ✅ Hero Section -->
+<section class="pt-24 pb-20 text-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4" data-aos="fade-down" data-aos-delay="100">RATE WAZASTO FREELANCER</h2>
+    <p class="text-lg md:text-xl mb-6" data-aos="fade-up" data-aos-delay="200">Rate your choice — come back next time with confidence!</p>
+  </div>
+</section>
+
+<!-- ✅ Rating Section -->
+<section class="pt-12 pb-16 px-4">
+  <div class="max-w-md mx-auto bg-gray-100 dark:bg-gray-800 p-8 rounded-2xl shadow-xl text-center" data-aos="zoom-in-up" data-aos-delay="100">
+    <h2 class="text-2xl font-bold mb-4 text-indigo-700 dark:text-yellow-400" data-aos="fade-down" data-aos-delay="200">How was your experience?</h2>
+    <p class="mb-6 text-sm text-gray-600 dark:text-gray-400" data-aos="fade-up" data-aos-delay="300">Rate WAZASTO FREELANCER out of 5</p>
+
+    <!-- ⭐ Stars -->
+    <div id="stars" class="flex justify-center text-4xl text-yellow-300 space-x-2 cursor-pointer mb-4" data-aos="zoom-in" data-aos-delay="400">
+      <span data-value="1" class="star-animate">☆</span>
+      <span data-value="2" class="star-animate">☆</span>
+      <span data-value="3" class="star-animate">☆</span>
+      <span data-value="4" class="star-animate">☆</span>
+      <span data-value="5" class="star-animate">☆</span>
+    </div>
+
+    <p id="message" class="text-green-500 font-semibold text-sm" data-aos="fade-up" data-aos-delay="500"></p>
+  </div>
+</section>
+
+<!-- ✅ AOS + Script -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 800, once: true });
+
+  function toggleMenu() {
+    const nav = document.getElementById("navLinks");
+    if (window.innerWidth < 768) {
+      nav.classList.toggle("hidden");
+    }
+  }
+
+  function toggleDark() {
+    const html = document.documentElement;
+    html.setAttribute("data-theme", html.getAttribute("data-theme") === "dark" ? "light" : "dark");
+  }
+
+  const stars = document.querySelectorAll('#stars span');
+  const message = document.getElementById('message');
+  let savedRating = localStorage.getItem('wazasto_rating') || 0;
+
+  function setRating(rating) {
+    stars.forEach((star, index) => {
+      star.textContent = (index < rating) ? '★' : '☆';
+    });
+    message.innerText = `You rated us ${rating} out of 5. Thanks!`;
+    localStorage.setItem('wazasto_rating', rating);
+  }
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const rating = parseInt(star.getAttribute('data-value'));
+      setRating(rating);
+    });
+  });
+
+  if (savedRating > 0) setRating(savedRating);
+</script>
+
+</body>
+</html>
